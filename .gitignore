@@ -4,3 +4,4 @@ Makefile
 Testing
 rest
 CMakeCache.txt
+.vscode
