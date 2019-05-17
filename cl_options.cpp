@@ -22,15 +22,17 @@ CommandLineOptions::CommandLineOptions(int argc, char *argv[]) :
 		int this_option_optind = optind ? optind : 1;
 		int option_index = 0;
 		static struct option long_options[] = {
-			{"get-posts",    no_argument,       (int *)&operation,  (int)Operations::GetPosts },
-			{"server",       required_argument, &server_fl,         1 },
-			{"user-id",      required_argument, (int *)&flags,      (int)OperationFlags::ByUserId },
-			{"post-id",      required_argument, (int *)&flags,      (int)OperationFlags::ByPostId },
-			{"comment-id",   required_argument, (int *)&flags,      (int)OperationFlags::ByCommentId },
-			{"create-post",  no_argument,       (int *)&operation,  (int)Operations::CreatePost },
-			{"body",         required_argument, 0,                  0 },
-			{"title",        required_argument, 0,                  0 },
-			{0,              0,                 0,                  0 }
+			{.name = "server",       .has_arg = required_argument, .flag = &server_fl,         .val = 1 },
+			{.name = "user-id",      .has_arg = required_argument, .flag = (int *)&flags,      .val = (int)OperationFlags::ByUserId },
+			{.name = "post-id",      .has_arg = required_argument, .flag = (int *)&flags,      .val = (int)OperationFlags::ByPostId },
+			{.name = "comment-id",   .has_arg = required_argument, .flag = (int *)&flags,      .val = (int)OperationFlags::ByCommentId },
+			{.name = "body",         .has_arg = required_argument, .flag = 0,                  .val = 0 },
+			{.name = "title",        .has_arg = required_argument, .flag = 0,                  .val = 0 },
+			{.name = "get-posts",    .has_arg = no_argument,       .flag = (int *)&operation,  .val = (int)Operations::GetPosts },
+			{.name = "update-post",  .has_arg = no_argument,       .flag = (int *)&operation,  .val = (int)Operations::UpdatePost },
+			{.name = "delete-post",  .has_arg = no_argument,       .flag = (int *)&operation,  .val = (int)Operations::DeletePost },
+			{.name = "create-post",  .has_arg = no_argument,       .flag = (int *)&operation,  .val = (int)Operations::CreatePost },
+			{.name = 0,              .has_arg = 0,                 .flag = 0,                  .val = 0 }
 		};
 		c = getopt_long(argc, argv, "abc:d:012",
 		long_options, &option_index);
@@ -43,31 +45,31 @@ CommandLineOptions::CommandLineOptions(int argc, char *argv[]) :
 			
 			switch (option_index)
 			{
-			case 1:	// server
+			case 0:	// server
 				if (optarg)
 				{
 					this->server = optarg;
 				}
 				break;
-			case 2:	// user-id
+			case 1:	// user-id
 				if (optarg)
 				{
 					this->user_id = std::strtol(optarg, NULL, 0);
 				}
 				break;
-			case 3:	// post-id
+			case 2:	// post-id
 				if (optarg)
 				{
 					this->post_id = std::strtol(optarg, NULL, 0);
 				}
 				break;
-			case 4:	// comment-id
+			case 3:	// comment-id
 				if (optarg)
 				{
 					this->comment_id = std::strtol(optarg, NULL, 0);
 				}
 				break;
-			case 6:	// body
+			case 4:	// body
 				if (optarg)
 				{
 					this->body = optarg;
@@ -77,7 +79,7 @@ CommandLineOptions::CommandLineOptions(int argc, char *argv[]) :
 						this->body.erase(this->body.length() - 1, 1);
 				}
 				break;
-			case 7:	// title
+			case 5:	// title
 				if (optarg)
 				{
 					this->title = optarg;
