@@ -1,7 +1,6 @@
 #include <list>
 #include <set>
 #include <string>
-#include "rest.h"
 #include "rest_entity.h"
 
 class Post : public RestEntity
@@ -54,21 +53,18 @@ public:
 	void setUserId(unsigned long userId);
 	void setTitle(std::string body);
 	void setBody(std::string title);
-
-	std::string createOnServer(RestAPI &server)
-	{
-		// string test_post = "{title: '" + title + "', body: '" + body + "', userId: " + std::to_string(userId) + "}";
-		return server.POST("/posts", this->toString());
-	}
 	
-	std::string updateOnServer(RestAPI &server)
+	virtual std::string getUpdatePath() override
 	{
-		return server.PUT(std::string("/posts/") + (*this)["id"], this->toString());
+		return std::string("/posts/") + (*this)["id"];
 	}
-	
-	std::string deleteOnServer(RestAPI &server)
+	virtual std::string getCreatePath() override
 	{
-		return server.DELETE(std::string("/posts/") + (*this)["id"]);
+		return "/posts";
+	}
+	virtual std::string getDeletePath() override
+	{
+		return std::string("/posts/") + (*this)["id"];
 	}
 
 	/*! \brief Return all posts to a generic container link in arguments
