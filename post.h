@@ -1,3 +1,6 @@
+#ifndef POST_H
+#define POST_H
+
 #include <list>
 #include <set>
 #include <string>
@@ -99,3 +102,5 @@ public:
 		getPosts(std::string("/posts?userId=") + std::to_string(userId), server, output);
 	}
 };
+
+#endif

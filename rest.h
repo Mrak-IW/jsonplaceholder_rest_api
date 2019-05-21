@@ -1,3 +1,6 @@
+#ifndef REST_H
+#define REST_H
+
 #include <string>
 #include <iostream>
 #include <stdlib.h>
@@ -73,3 +76,5 @@ public:
 		curl_easy_cleanup(this->curl_handle);
 	}
 };
+
+#endif

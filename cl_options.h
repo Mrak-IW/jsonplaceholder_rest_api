@@ -1,3 +1,6 @@
+#ifndef CL_OPTIONS_H
+#define CL_OPTIONS_H
+
 #include <iostream>
 #include <stdlib.h>
 // #include <unistd.h>
@@ -79,3 +82,5 @@ public:
 		return (this->fieldFlags & fieldFlags) == fieldFlags;
 	}
 };
+
+#endif

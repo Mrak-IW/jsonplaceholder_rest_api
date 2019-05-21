@@ -1,3 +1,6 @@
+#ifndef REST_ENTITY_H
+#define REST_ENTITY_H
+
 #include <iostream>
 #include <set>
 #include "rapidjson/document.h"
@@ -54,3 +57,5 @@ public:
 	virtual std::string getCreatePath() = 0;
 	virtual std::string getDeletePath() = 0;
 };
+
+#endif
