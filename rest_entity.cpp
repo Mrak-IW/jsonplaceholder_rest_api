@@ -8,6 +8,19 @@ ostream &operator<<(ostream &out, const RestEntity &obj)
 	return out;
 }
 
+std::string RestEntity::operator [] (std::string name)
+{
+	rapidjson::StringBuffer buffer;
+	rapidjson::Value &value = this->data[name.c_str()];
+	
+	buffer.Clear();
+	
+	rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+	value.Accept(writer);
+	
+	return std::string(buffer.GetString());
+}
+
 std::string RestEntity::toString() const
 {
 	rapidjson::StringBuffer buffer;
@@ -54,7 +67,7 @@ void RestEntity::setString(std::string name, std::string value)
 	if (this->data.HasMember(name.c_str()))
 	{
 		auto &allocator = this->data.GetAllocator();
-		this->data[name.c_str()].SetString(name.c_str(), name.length(), allocator);
+		this->data[name.c_str()].SetString(value.c_str(), value.length(), allocator);
 	}
 	else
 	{
@@ -62,7 +75,7 @@ void RestEntity::setString(std::string name, std::string value)
 		auto &allocator = this->data.GetAllocator();
 		rapidjson::Value v_name(name.c_str(), allocator);
 
-		json_val.SetString(name.c_str(), name.length(), allocator);
+		json_val.SetString(value.c_str(), value.length(), allocator);
 		data.AddMember(v_name, json_val, allocator);
 	}
 }

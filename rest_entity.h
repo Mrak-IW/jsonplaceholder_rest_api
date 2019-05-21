@@ -32,8 +32,5 @@ public:
 	virtual std::string toString() const;
 	virtual std::string toStringPretty() const;
 	
-	virtual std::string operator [] (std::string key)
-	{
-		return data[key.c_str()].GetString();
-	}
+	virtual std::string operator [] (std::string key);
 };

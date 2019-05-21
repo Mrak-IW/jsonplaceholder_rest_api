@@ -60,3 +60,13 @@ set_tests_properties(
 	PASS_REGULAR_EXPRESSION "\"id\": 101"
 	FAIL_REGULAR_EXPRESSION "ERROR"
 )
+
+add_test(
+	NAME UpdatePost
+	COMMAND ./rest --update-post --post-id=10 --user-id=55 --body="updated post body"
+)
+set_tests_properties(
+	UpdatePost PROPERTIES
+	PASS_REGULAR_EXPRESSION "updated"
+	FAIL_REGULAR_EXPRESSION "ERROR"
+)

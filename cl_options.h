@@ -4,6 +4,11 @@
 #include <getopt.h>
 
 #define DEFAULT_SERVER "https://jsonplaceholder.typicode.com"
+#define FL_TITLE 1
+#define FL_BODY (1 << 1)
+#define FL_USER_ID (1 << 2)
+#define FL_POST_ID (1 << 3)
+#define FL_COMMENT_ID (1 << 4)
 
 enum class Operations : int
 {
@@ -33,6 +38,7 @@ class CommandLineOptions
 	std::string body;
 	Operations operation;
 	OperationFlags flags;
+	int fieldFlags;
 public:
 	CommandLineOptions(int argc, char *argv[]);
 	
@@ -67,5 +73,9 @@ public:
 	const std::string getBody() const
 	{
 		return this->body;
+	}
+	const bool isFieldsPresent(int fieldFlags) const
+	{
+		return (this->fieldFlags & fieldFlags) == fieldFlags;
 	}
 };

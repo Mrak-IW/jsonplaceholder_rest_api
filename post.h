@@ -7,9 +7,6 @@
 class Post : public RestEntity
 {
 private:
-	Post() : RestEntity()
-	{}
-
 	/*! \brief Return posts to a generic container link in arguments
 	 *
 	 * Specify the type of container in template specialization or just by using argument of the type needed.
@@ -50,16 +47,23 @@ public:
 	/*! \brief Get post from server by post id */
 	Post(unsigned long post_id, RestAPI &server);
 	Post(unsigned long id, unsigned long userId, std::string title, std::string body);
+	Post() : RestEntity()
+	{}
 	
 	void setId(unsigned long id);
 	void setUserId(unsigned long userId);
-	void setTitle(std::string title);
+	void setTitle(std::string body);
 	void setBody(std::string title);
 
 	std::string createOnServer(RestAPI &server)
 	{
 		// string test_post = "{title: '" + title + "', body: '" + body + "', userId: " + std::to_string(userId) + "}";
 		return server.POST("/posts", this->toString());
+	}
+	
+	std::string updateOnServer(RestAPI &server)
+	{
+		return server.PUT(std::string("/posts/") + (*this)["id"] , this->toString());
 	}
 
 	/*! \brief Return all posts to a generic container link in arguments

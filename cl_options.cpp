@@ -6,6 +6,7 @@ CommandLineOptions::CommandLineOptions(int argc, char *argv[]) :
 	server(NULL),
 	operation(Operations::None),
 	flags(OperationFlags::None),
+	fieldFlags(0),
 	title("default title"),
 	body("default body"),
 	user_id(0),
@@ -55,18 +56,21 @@ CommandLineOptions::CommandLineOptions(int argc, char *argv[]) :
 				if (optarg)
 				{
 					this->user_id = std::strtol(optarg, NULL, 0);
+					fieldFlags |= FL_USER_ID;
 				}
 				break;
 			case 2:	// post-id
 				if (optarg)
 				{
 					this->post_id = std::strtol(optarg, NULL, 0);
+					fieldFlags |= FL_POST_ID;
 				}
 				break;
 			case 3:	// comment-id
 				if (optarg)
 				{
 					this->comment_id = std::strtol(optarg, NULL, 0);
+					fieldFlags |= FL_COMMENT_ID;
 				}
 				break;
 			case 4:	// body
@@ -77,6 +81,8 @@ CommandLineOptions::CommandLineOptions(int argc, char *argv[]) :
 						this->body.erase(0, 1);
 					if(this->body[this->body.length() - 1] == '"')
 						this->body.erase(this->body.length() - 1, 1);
+					
+					fieldFlags |= FL_BODY;
 				}
 				break;
 			case 5:	// title
@@ -87,6 +93,8 @@ CommandLineOptions::CommandLineOptions(int argc, char *argv[]) :
 						this->title.erase(0, 1);
 					if(this->title[this->title.length() - 1] == '"')
 						this->title.erase(this->title.length() - 1, 1);
+					
+					fieldFlags |= FL_TITLE;
 				}
 				break;
 			default:

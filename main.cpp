@@ -80,6 +80,38 @@ int main(int argc, char **argv)
 		     << DELIMETER << endl;
 	}
 	break;
+	case Operations::UpdatePost:
+	{
+		if (!opt.isFieldsPresent(FL_POST_ID))
+		{
+			cout << "ERROR: Post to be updated must be found by id" << endl;
+		}
+		
+		Post post;
+		
+		post.setId(opt.getPostId());
+		if (opt.isFieldsPresent(FL_BODY))
+		{
+			post.setBody(opt.getBody());
+		}
+		if (opt.isFieldsPresent(FL_TITLE))
+		{
+			post.setTitle(opt.getTitle());
+		}
+		if (opt.isFieldsPresent(FL_USER_ID))
+		{
+			post.setUserId(opt.getUserId());
+		}
+		
+		cout << DELIMETER << endl
+		     << "Post::updateOnServer()" << endl
+		     << post << endl
+		     << DELIMETER << endl
+		     << "Response:" << endl
+		     << post.updateOnServer(server) << endl
+		     << DELIMETER << endl;
+	}
+	break;
 	default:
 		cout << "ERROR operation" << endl;
 		break;
