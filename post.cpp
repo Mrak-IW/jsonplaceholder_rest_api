@@ -1,75 +1,47 @@
 #include "post.h"
 
-rapidjson::Document Post::serializeToJSON()
+using namespace std;
+
+Post::Post(unsigned long obj_id, RestAPI &server)
 {
-	rapidjson::Document doc;
+	data.Parse(server.GET("/posts/" + std::to_string(obj_id)).c_str());
+}
+
+Post::Post(unsigned long id, unsigned long userId, string title, string body) :
+Post()
+{
 	rapidjson::Value json_val;
-	auto &allocator = doc.GetAllocator();
-	doc.SetObject();
+	auto &allocator = data.GetAllocator();
 	
-	json_val.SetUint64(this->userId);
-	doc.AddMember("userId", json_val, allocator);
+	json_val.SetUint64(userId);
+	data.AddMember("userId", json_val, allocator);
 	
-	json_val.SetUint64(this->id);
-	doc.AddMember("id", json_val, allocator);
+	json_val.SetUint64(id);
+	data.AddMember("id", json_val, allocator);
 	
-	json_val.SetString(this->title.c_str(), this->title.length(), allocator);
-	doc.AddMember("title", json_val, allocator);
+	json_val.SetString(title.c_str(), title.length(), allocator);
+	data.AddMember("title", json_val, allocator);
 	
-	return doc;
+	json_val.SetString(body.c_str(), body.length(), allocator);
+	data.AddMember("body", json_val, allocator);
 }
 
-void Post::deserializeFromJSON(const rapidjson::Value &doc)
+void Post::setId(unsigned long id)
 {
-	// if (!doc.IsObject())
-	// 	throw std::runtime_error("document is not an object");
-
-	// static const char* members[] = { "id", "userId", "title", "body" };
-	
-	// for(size_t i = 0; i < sizeof(members)/sizeof(members[0]); i++)
-	// 	if (!doc.HasMember(members[i]))
-	// 		throw std::runtime_error("missing fields");
-
-	this->id = doc["id"].GetUint64();
-	this->userId = doc["userId"].GetUint64();
-	this->title = doc["title"].GetString();
-	this->body = doc["body"].GetString();
+	this->setUInt64("id", id);
 }
 
-string Post::toString() const
+void Post::setUserId(unsigned long id)
 {
-	string result = 
-	  "{\"userId\":" + std::to_string(this->userId) + ","
-	  "\"id\":" + std::to_string(this->id) + ","
-	  "\"title\":\"" + this->title + "\","
-	  "\"body\":\"" + this->body + "\""
-	  "}";
-
-	return result;
+	this->setUInt64("userId", id);
 }
 
-string Post::toStringPretty() const
+void Post::setTitle(std::string title)
 {
-	string result = 
-	  "{\n"
-	  "\t\"userId\": " + std::to_string(this->userId) + ",\n"
-	  "\t\"id\": " + std::to_string(this->id) + ",\n"
-	  "\t\"title\": \"" + this->title + "\",\n"
-	  "\t\"body\": \"" + this->body + "\"\n"
-	  "}";
-
-	return result;
+	this->setString("title", title);
 }
 
-Post Post::getById(unsigned long obj_id, RestAPI &server)
+void Post::setBody(std::string body)
 {
-	Post result;
-	rapidjson::Document doc;
-	string jsontext = server.GET("/posts/" + std::to_string(obj_id));
-	
-	doc.Parse(jsontext.c_str());
-	
-	result.deserializeFromJSON(doc);
-	
-	return result;
+	this->setString("body", body);
 }

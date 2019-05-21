@@ -17,6 +17,8 @@ add_executable(
 target_include_directories(${APP_NAME} PRIVATE ${RAPID_JSON_INCLUDE})
 target_link_libraries(${APP_NAME} curl)
 
+# Tests section:
+
 enable_testing()
 
 add_test(

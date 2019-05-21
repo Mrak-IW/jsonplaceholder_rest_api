@@ -15,6 +15,7 @@ protected:
 public:
 	std::string GET(std::string route) const;
 	std::string POST(std::string route, std::string data) const;
+	std::string PUT(std::string route, std::string data) const;
 
 	RestAPI(const std::string server) : 
 		server_url(server)

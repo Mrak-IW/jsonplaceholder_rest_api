@@ -1,23 +1,15 @@
 #include <list>
+#include <set>
 #include <string>
 #include "rest.h"
 #include "rest_entity.h"
 
 class Post : public RestEntity
 {
-	unsigned long userId;
-	unsigned long id;
-	string title;
-	string body;
-
 private:
-	Post() : 
-		Post(0, 0, "", "")
+	Post() : RestEntity()
 	{}
 
-	virtual rapidjson::Document serializeToJSON() override;
-	virtual void deserializeFromJSON(const rapidjson::Value &doc) override;
-	
 	/*! \brief Return posts to a generic container link in arguments
 	 *
 	 * Specify the type of container in template specialization or just by using argument of the type needed.
@@ -29,24 +21,25 @@ private:
 	 * \param server Server instance to get data from
 	 * \param output Link to an existing container to be filled with the posts gained
 	 */
-	template< template< typename TObject, typename TAllocator = std::allocator <TObject> > class TContainer>
-	static void getPosts(string route, RestAPI &server, TContainer<Post> &output)
+	template <template <typename TObject, typename TAllocator = std::allocator<TObject>> class TContainer>
+	static void getPosts(std::string route, RestAPI &server, TContainer<Post> &output)
 	{
 		TContainer<Post> result;
 		rapidjson::Document doc;
-		string jsontext = server.GET(route);
+		rapidjson::Document::AllocatorType& a = doc.GetAllocator();
+		std::string jsontext = server.GET(route);
 		unsigned long arr_size;
-		
+
 		doc.Parse(jsontext.c_str());
 		arr_size = doc.Size();
-		
-		if(!doc.IsArray())
+
+		if (!doc.IsArray())
 			throw std::runtime_error("document is not an array");
 
 		for (rapidjson::Value::ConstValueIterator itr = doc.Begin(); itr != doc.End(); ++itr)
 		{
 			Post buf;
-			buf.deserializeFromJSON(*itr);
+			buf.data.CopyFrom(*itr, a);
 			result.insert(result.end(), buf);
 		}
 
@@ -54,24 +47,21 @@ private:
 	}
 
 public:
-	Post(unsigned long id, unsigned long userId, string title, string body) : 
-		id(id),
-		userId(userId),
-		title(title),
-		body(body)
-	{}
+	/*! \brief Get post from server by post id */
+	Post(unsigned long post_id, RestAPI &server);
+	Post(unsigned long id, unsigned long userId, std::string title, std::string body);
+	
+	void setId(unsigned long id);
+	void setUserId(unsigned long userId);
+	void setTitle(std::string title);
+	void setBody(std::string title);
 
-	string toString() const;
-	string toStringPretty() const;
-
-	std::string pushToServer(RestAPI &server)
+	std::string createOnServer(RestAPI &server)
 	{
 		// string test_post = "{title: '" + title + "', body: '" + body + "', userId: " + std::to_string(userId) + "}";
 		return server.POST("/posts", this->toString());
 	}
-	
-	static Post getById(unsigned long obj_id, RestAPI &server);
-	
+
 	/*! \brief Return all posts to a generic container link in arguments
 	 *
 	 * Specify the type of container in template specialization or just by using argument of the type needed.
@@ -82,7 +72,7 @@ public:
 	 * \param server Server instance to get data from
 	 * \param output Link to an existing container to be filled with the posts gained
 	 */
-	template< template< typename TObject, typename TAllocator = std::allocator <TObject> > class TContainer>
+	template <template <typename TObject, typename TAllocator = std::allocator<TObject>> class TContainer>
 	static void getAll(RestAPI &server, TContainer<Post> &output)
 	{
 		getPosts("/posts", server, output);
@@ -98,7 +88,7 @@ public:
 	 * \param server Server instance to get data from
 	 * \param output Link to an existing container to be filled with the posts gained
 	 */
-	template< template< typename TObject, typename TAllocator = std::allocator <TObject> > class TContainer>
+	template <template <typename TObject, typename TAllocator = std::allocator<TObject>> class TContainer>
 	static void getAllByParentId(unsigned long userId, RestAPI &server, TContainer<Post> &output)
 	{
 		getPosts(std::string("/posts?userId=") + std::to_string(userId), server, output);

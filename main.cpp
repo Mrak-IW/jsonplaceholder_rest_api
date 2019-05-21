@@ -25,7 +25,7 @@ int main(int argc, char **argv)
 			cout << DELIMETER << endl
 			     << "Post::getById(" << opt.getPostId() << ")" << endl
 			     << DELIMETER << endl
-			     << Post::getById(opt.getPostId(), server) << endl;
+			     << Post(opt.getPostId(), server) << endl;
 			break;
 		case OperationFlags::None:
 		{
@@ -70,13 +70,13 @@ int main(int argc, char **argv)
 		Post post(opt.getPostId(), opt.getUserId(), opt.getTitle(), opt.getBody());
 
 		cout << DELIMETER << endl
-		     << "Post::pushToServer()" << endl
+		     << "Post::createOnServer()" << endl
 		     << post.toString() << endl
 		     << DELIMETER << endl
 		     << "Response:" << endl
 		     // For some reason server returns only id of new post but not any of its fields.
 		     // Don't know if it is a problem of my code.
-		     << post.pushToServer(server) << endl
+		     << post.createOnServer(server) << endl
 		     << DELIMETER << endl;
 	}
 	break;
