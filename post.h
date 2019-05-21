@@ -63,7 +63,12 @@ public:
 	
 	std::string updateOnServer(RestAPI &server)
 	{
-		return server.PUT(std::string("/posts/") + (*this)["id"] , this->toString());
+		return server.PUT(std::string("/posts/") + (*this)["id"], this->toString());
+	}
+	
+	std::string deleteOnServer(RestAPI &server)
+	{
+		return server.DELETE(std::string("/posts/") + (*this)["id"]);
 	}
 
 	/*! \brief Return all posts to a generic container link in arguments

@@ -70,3 +70,13 @@ set_tests_properties(
 	PASS_REGULAR_EXPRESSION "updated"
 	FAIL_REGULAR_EXPRESSION "ERROR"
 )
+
+add_test(
+	NAME DeletePost
+	COMMAND ./rest --delete-post --post-id=10
+)
+set_tests_properties(
+	DeletePost PROPERTIES
+	PASS_REGULAR_EXPRESSION "DELETE /posts/10"
+	FAIL_REGULAR_EXPRESSION "ERROR"
+)

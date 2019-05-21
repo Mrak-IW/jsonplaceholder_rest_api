@@ -112,6 +112,28 @@ int main(int argc, char **argv)
 		     << DELIMETER << endl;
 	}
 	break;
+	case Operations::DeletePost:
+	{
+		switch (opt.getOperationFlags())
+		{
+		case OperationFlags::ByPostId:
+		{
+			Post post;
+			post.setId(opt.getPostId());
+			cout << DELIMETER << endl
+			     << "Post::deleteOnServer(" << opt.getPostId() << ")" << endl
+			     << DELIMETER << endl
+			     << "Response:" << endl
+			     << post.deleteOnServer(server) << endl
+			     << DELIMETER << endl;
+		}
+		break;
+		default:
+			cout << "ERROR --post-id must be set to delete a post" << endl;
+			break;
+		}
+	}
+	break;
 	default:
 		cout << "ERROR operation" << endl;
 		break;

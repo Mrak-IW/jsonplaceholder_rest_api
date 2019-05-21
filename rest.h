@@ -16,6 +16,7 @@ public:
 	std::string GET(std::string route) const;
 	std::string POST(std::string route, std::string data) const;
 	std::string PUT(std::string route, std::string data) const;
+	std::string DELETE(std::string route) const;
 
 	RestAPI(const std::string server) : 
 		server_url(server)
@@ -27,16 +28,6 @@ public:
 	const std::string getServerUrl() const
 	{
 		return this->server_url;
-	}
-	
-	std::string getPostComments(unsigned long postId)
-	{
-		return this->GET(this->server_url + "/posts/" + std::to_string(postId) + "/comments");
-	}
-	
-	std::string getPostComment(unsigned long postId, unsigned long commentId)
-	{
-		return this->GET(this->server_url + "/posts/" + std::to_string(postId) + "/comments?id=" + std::to_string(commentId));
 	}
 };
 
