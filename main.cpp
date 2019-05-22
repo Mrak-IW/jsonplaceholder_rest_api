@@ -5,6 +5,7 @@
 #include <getopt.h>
 #include "cl_options.h"
 #include "post.h"
+#include "user.h"
 
 using namespace std;
 
@@ -125,6 +126,39 @@ int main(int argc, char **argv)
 			     << DELIMETER << endl
 			     << "Response:" << endl
 			     << post.deleteOnServer(server) << endl
+			     << DELIMETER << endl;
+		}
+		break;
+		default:
+			cout << "ERROR --post-id must be set to delete a post" << endl;
+			break;
+		}
+	}
+	break;
+	case Operations::GetUsers:
+	{
+		switch (opt.getOperationFlags())
+		{
+		case OperationFlags::ByUserId:
+		{
+			User user(opt.getUserId(), server);
+			// User user;
+			// user.setName("test user");
+			// user.setId(100500);
+			// user.company.setName("CCCCCCC");
+			// user.company.setCatchPhrase("CFCFCFCFCFCFCF");
+			
+			cout << DELIMETER << endl
+			     << "User get by ID(" << opt.getUserId() << ")" << endl
+			     << DELIMETER << endl
+			     << "Response:" << endl
+			     << user << endl;
+			// user.company.setName("NNNNNNN");
+			cout << DELIMETER << endl
+			     << "User.company.name = '" << user.company.getName() << "'" << endl
+			     << "User.company.catchPhrase = '" << user.company.getCatchPhrase() << "'" << endl
+			     << "User.company.bs = '" << user.company.getBs() << "'" << endl
+			     << "User.company = " << user["company"] << endl
 			     << DELIMETER << endl;
 		}
 		break;

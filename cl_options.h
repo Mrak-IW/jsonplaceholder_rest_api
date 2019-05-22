@@ -17,7 +17,7 @@ enum class Operations : int
 {
 	None = 0,
 	GetPosts,
-	GetComments,
+	GetUsers,
 	CreatePost,
 	UpdatePost,
 	DeletePost,

@@ -12,6 +12,7 @@ add_executable(
 	rest.cpp
 	post.cpp
 	main.cpp
+	user.cpp
 )
 
 target_include_directories(${APP_NAME} PRIVATE ${RAPID_JSON_INCLUDE})
@@ -78,5 +79,15 @@ add_test(
 set_tests_properties(
 	DeletePost PROPERTIES
 	PASS_REGULAR_EXPRESSION "DELETE /posts/10"
+	FAIL_REGULAR_EXPRESSION "ERROR"
+)
+
+add_test(
+	NAME GetUserById
+	COMMAND ./rest --get-users --user-id=2
+)
+set_tests_properties(
+	GetUserById PROPERTIES
+	PASS_REGULAR_EXPRESSION "User.company.name = 'Deckow-Crist'"
 	FAIL_REGULAR_EXPRESSION "ERROR"
 )

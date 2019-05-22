@@ -33,10 +33,10 @@ CommandLineOptions::CommandLineOptions(int argc, char *argv[]) :
 			{.name = "update-post",  .has_arg = no_argument,       .flag = (int *)&operation,  .val = (int)Operations::UpdatePost },
 			{.name = "delete-post",  .has_arg = no_argument,       .flag = (int *)&operation,  .val = (int)Operations::DeletePost },
 			{.name = "create-post",  .has_arg = no_argument,       .flag = (int *)&operation,  .val = (int)Operations::CreatePost },
+			{.name = "get-users",    .has_arg = no_argument,       .flag = (int *)&operation,  .val = (int)Operations::GetUsers },
 			{.name = 0,              .has_arg = 0,                 .flag = 0,                  .val = 0 }
 		};
-		c = getopt_long(argc, argv, "abc:d:012",
-		long_options, &option_index);
+		c = getopt_long(argc, argv, "", long_options, &option_index);
 		if (c == -1)
 			break;
 		switch (c)

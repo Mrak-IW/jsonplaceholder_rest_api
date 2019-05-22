@@ -6,6 +6,27 @@
 #include <string>
 #include "rest_entity.h"
 
+typedef class User User;
+
+class UserCompany : public RestEntitySubobject
+{
+protected:
+	virtual const char *getSubobjectName() const override
+	{
+		return "company";
+	}
+public:
+	UserCompany(User &parent) : RestEntitySubobject((RestEntity &)parent)
+	{}
+	
+	std::string getName();
+	std::string getCatchPhrase();
+	std::string getBs();
+	void setName(std::string name);
+	void setCatchPhrase(std::string catchPhrase);
+	void setBs(std::string bs);
+};
+
 class User : public RestEntity
 {
 private:
@@ -46,16 +67,19 @@ private:
 	}
 
 public:
+	UserCompany company;
+
 	/*! \brief Get User from server by User id */
 	User(unsigned long post_id, RestAPI &server);
-	User(unsigned long id, unsigned long userId, std::string title, std::string body);
-	User() : RestEntity()
+	User() :
+		RestEntity(),
+		company(*this)
 	{}
 	
 	void setId(unsigned long id);
-	void setUserId(unsigned long userId);
-	void setTitle(std::string body);
-	void setBody(std::string title);
+	void setName(std::string name);
+	void setUsername(std::string username);
+	void setEmail(std::string email);
 	
 	virtual std::string getUpdatePath() override
 	{
@@ -83,23 +107,7 @@ public:
 	template <template <typename TObject, typename TAllocator = std::allocator<TObject>> class TContainer>
 	static void getAll(RestAPI &server, TContainer<User> &output)
 	{
-		getPosts("/users", server, output);
-	}
-
-	/*! \brief Return all posts with specified userId to a generic container link in arguments
-	 *
-	 * Specify the type of container in template specialization or just by using argument of the type needed.
-	 * Container must support insert() method.
-	 * 
-	 * Throws exceptions if parsing of json plaintext goes wrong.
-	 * 
-	 * \param server Server instance to get data from
-	 * \param output Link to an existing container to be filled with the posts gained
-	 */
-	template <template <typename TObject, typename TAllocator = std::allocator<TObject>> class TContainer>
-	static void getAllByParentId(unsigned long userId, RestAPI &server, TContainer<User> &output)
-	{
-		getPosts(std::string("/posts?userId=") + std::to_string(userId), server, output);
+		getUsers("/users", server, output);
 	}
 };
 

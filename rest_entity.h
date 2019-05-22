@@ -8,8 +8,24 @@
 #include "rapidjson/prettywriter.h"
 #include "rest.h"
 
+typedef class RestEntity RestEntity;
+
+class RestEntitySubobject
+{
+	RestEntity &parent;
+protected:
+	std::string getString(std::string name);
+	void setString(std::string name, std::string value);
+	
+	virtual const char *getSubobjectName() const = 0;
+public:
+	RestEntitySubobject(RestEntity &parent) : parent(parent)
+	{}
+};
+
 class RestEntity
 {
+	friend class RestEntitySubobject;
 protected:
 	rapidjson::Document data;
 	

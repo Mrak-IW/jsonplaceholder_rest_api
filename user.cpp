@@ -2,28 +2,14 @@
 
 using namespace std;
 
-User::User(unsigned long obj_id, RestAPI &server)
-{
-	data.Parse(server.GET("/posts/" + std::to_string(obj_id)).c_str());
-}
+// =============================
+// ======== class User =========
+// =============================
 
-User::User(unsigned long id, unsigned long userId, string title, string body) :
-User()
+User::User(unsigned long obj_id, RestAPI &server) : 
+	company(*this)
 {
-	rapidjson::Value json_val;
-	auto &allocator = data.GetAllocator();
-	
-	json_val.SetUint64(userId);
-	data.AddMember("userId", json_val, allocator);
-	
-	json_val.SetUint64(id);
-	data.AddMember("id", json_val, allocator);
-	
-	json_val.SetString(title.c_str(), title.length(), allocator);
-	data.AddMember("title", json_val, allocator);
-	
-	json_val.SetString(body.c_str(), body.length(), allocator);
-	data.AddMember("body", json_val, allocator);
+	data.Parse(server.GET("/users/" + std::to_string(obj_id)).c_str());
 }
 
 void User::setId(unsigned long id)
@@ -31,17 +17,51 @@ void User::setId(unsigned long id)
 	this->setUInt64("id", id);
 }
 
-void User::setUserId(unsigned long id)
+void User::setName(std::string name)
 {
-	this->setUInt64("userId", id);
+	this->setString("name", name);
 }
 
-void User::setTitle(std::string title)
+void User::setUsername(std::string username)
 {
-	this->setString("title", title);
+	this->setString("username", username);
 }
 
-void User::setBody(std::string body)
+void User::setEmail(std::string email)
 {
-	this->setString("body", body);
+	this->setString("body", email);
+}
+
+// =============================
+// ===== class UserCompany =====
+// =============================
+
+std::string UserCompany::getName()
+{
+	return this->getString("name");
+}
+
+std::string UserCompany::getCatchPhrase()
+{
+	return this->getString("catchPhrase");
+}
+
+std::string UserCompany::getBs()
+{
+	return this->getString("bs");
+}
+
+void UserCompany::setName(std::string name)
+{
+	this->setString("name", name);
+}
+
+void UserCompany::setCatchPhrase(std::string catchPhrase)
+{
+	this->setString("catchPhrase", catchPhrase);
+}
+
+void UserCompany::setBs(std::string bs)
+{
+	this->setString("bs", bs);
 }
