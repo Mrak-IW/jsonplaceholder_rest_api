@@ -41,7 +41,7 @@ int main(int argc, char **argv)
 				cout << DELIMETER << endl
 				     << post << endl;
 			}
-			cout << posts.size() << " posts got";
+			cout << posts.size() << " posts got" << endl;
 		}
 		break;
 		case OperationFlags::ByUserId:
@@ -87,9 +87,9 @@ int main(int argc, char **argv)
 		{
 			cout << "ERROR: Post to be updated must be found by id" << endl;
 		}
-		
+
 		Post post;
-		
+
 		post.setId(opt.getPostId());
 		if (opt.isFieldsPresent(FL_BODY))
 		{
@@ -103,7 +103,7 @@ int main(int argc, char **argv)
 		{
 			post.setUserId(opt.getUserId());
 		}
-		
+
 		cout << DELIMETER << endl
 		     << "Post::updateOnServer()" << endl
 		     << post << endl
@@ -139,6 +139,23 @@ int main(int argc, char **argv)
 	{
 		switch (opt.getOperationFlags())
 		{
+		case OperationFlags::None:
+		{
+			std::list<User> users;
+			User::getAll(server, users);
+
+			cout << DELIMETER << endl
+			     << "User::getAll()" << endl
+			     << DELIMETER;
+
+			for (auto user : users)
+			{
+				cout << DELIMETER << endl
+				     << user << endl;
+			}
+			cout << users.size() << " users got" << endl;
+		}
+		break;
 		case OperationFlags::ByUserId:
 		{
 			User user(opt.getUserId(), server);
@@ -147,7 +164,7 @@ int main(int argc, char **argv)
 			// user.setId(100500);
 			// user.company.setName("CCCCCCC");
 			// user.company.setCatchPhrase("CFCFCFCFCFCFCF");
-			
+
 			cout << DELIMETER << endl
 			     << "User get by ID(" << opt.getUserId() << ")" << endl
 			     << DELIMETER << endl
