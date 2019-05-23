@@ -2,7 +2,7 @@
 This is a sample code implementing a REST API for https://jsonplaceholder.typicode.com/ test server. Details about this server you can get by the link above.
 
 # Disclaimer
-I'm contious about this project is not fool-proof. I was not trying to make it so. It is a demo-program and just a sandbox to try some C++ features.
+I'm concious about this project is not foolproof. I was not trying to make it so. It is a demo-program and just a sandbox to try some C++ features.
 
 # Usage
 The project is using *cmake* system.  
