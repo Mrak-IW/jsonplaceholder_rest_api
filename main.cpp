@@ -158,7 +158,7 @@ int main(int argc, char **argv)
 			     << "User.company.name = '" << user.company.getName() << "'" << endl
 			     << "User.company.catchPhrase = '" << user.company.getCatchPhrase() << "'" << endl
 			     << "User.company.bs = '" << user.company.getBs() << "'" << endl
-			     << "User.company = " << user["company"] << endl
+			     << "User.address = " << user["address"] << endl
 			     << DELIMETER << endl;
 		}
 		break;
