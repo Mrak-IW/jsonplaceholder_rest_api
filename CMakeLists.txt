@@ -83,6 +83,16 @@ set_tests_properties(
 )
 
 add_test(
+	NAME GetAllUses
+	COMMAND ./rest --get-users
+)
+set_tests_properties(
+	GetAllUses PROPERTIES
+	PASS_REGULAR_EXPRESSION "10 users got"
+	FAIL_REGULAR_EXPRESSION "ERROR"
+)
+
+add_test(
 	NAME GetUserById
 	COMMAND ./rest --get-users --user-id=2
 )
